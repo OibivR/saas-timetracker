@@ -18,6 +18,20 @@ class AccountsController < ApplicationController
     end
   end
 
+  def delete_all
+    if params[:confirm] == 'yes'
+      deleted_count = Account.count
+      begin
+        Account.delete_all_with_schemas!
+        redirect_to root_path, notice: "Successfully deleted #{deleted_count} accounts and their data."
+      rescue => e
+        redirect_to root_path, alert: "Error deleting accounts: #{e.message}"
+      end
+    else
+      redirect_to root_path, alert: "Account deletion cancelled."
+    end
+  end
+
 private
   def account_params
     params.require(:account).permit(:subdomain, owner_attributes: [:name, :email, :password, :password_confirmation])
