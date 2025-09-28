@@ -4,4 +4,26 @@
     <p>Track your time with the most awesome time tracking app ever.</p>
     <p><%= link_to "Create Account", new_account_path, class: 'btn btn-primary btn-lg' %></p>
   </div>
+
+  <% if Account.count > 0 %>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Account Management</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong>Total Accounts:</strong> <%= Account.count %></p>
+        <p>If you want to start fresh and delete all existing accounts:</p>
+        <%= form_tag delete_all_accounts_path, method: :delete, onsubmit: "return confirm('Are you absolutely sure you want to delete ALL accounts and their data? This action cannot be undone!');" do %>
+          <div class="form-group">
+            <label class="checkbox">
+              <%= check_box_tag :confirm_checkbox, '1', false, required: true %>
+              I understand that this will permanently delete all accounts and their data
+            </label>
+          </div>
+          <%= hidden_field_tag :confirm, 'yes' %>
+          <%= submit_tag "Delete All Accounts", class: 'btn btn-danger', onclick: "return this.form.confirm_checkbox.checked && confirm('This will delete ALL accounts. Are you REALLY sure?');" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

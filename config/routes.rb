@@ -20,6 +20,10 @@ Timetracker::Application.routes.draw do
   
   constraints(SubdomainBlank) do
     root 'welcome#index'
-    resources :accounts, only: [:new, :create]
+    resources :accounts, only: [:new, :create] do
+      collection do
+        delete :delete_all
+      end
+    end
   end
 end
